@@ -8,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 
 type Testimonial = {
   name: string;
@@ -50,17 +49,34 @@ const TESTIMONIALS: Testimonial[] = [
 ];
 
 export function Testimonials() {
+  const carouselRef = React.useRef<any>(null);
+
+  // Auto-slide on small screens
+  React.useEffect(() => {
+    const isMobile = window.innerWidth < 640; // sm breakpoint
+    if (!isMobile || !carouselRef.current) return;
+
+    const interval = setInterval(() => {
+      carouselRef.current?.scrollNext();
+    }, 3000); // slide every 3s
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16">
-      <h2 className="text-center text-3xl font-bold tracking-tight md:text-4xl">
+    <section className="mx-auto max-w-7xl px-4 py-12 md:py-16">
+      {/* Heading */}
+      <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
         What Families Say
       </h2>
-      <p className="mt-2 text-center text-muted-foreground text-lg">
+      <p className="mt-2 text-center text-muted-foreground text-base sm:text-lg">
         Experiences from Delhi families who trusted our services
       </p>
 
-      <div className="relative mt-10">
+      {/* Carousel */}
+      <div className="relative mt-8 md:mt-12">
         <Carousel
+          ref={carouselRef}
           opts={{
             align: "start",
             loop: true,
@@ -69,15 +85,18 @@ export function Testimonials() {
         >
           <CarouselContent className="-ml-4">
             {TESTIMONIALS.map((t, i) => (
-              <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                <article className="h-full rounded-2xl border bg-background p-6 shadow-md hover:shadow-lg transition">
-                  <p className="text-base italic leading-relaxed text-foreground">
+              <CarouselItem
+                key={i}
+                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+              >
+                <article className="h-full rounded-2xl border bg-background p-6 shadow-md transition hover:shadow-lg">
+                  <p className="text-sm sm:text-base italic leading-relaxed text-foreground">
                     &ldquo;{t.content}&rdquo;
                   </p>
 
                   <div className="mt-6 flex items-center gap-3">
-                    {/* Initials */}
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-base font-bold text-primary">
+                    {/* Initials Avatar */}
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-primary/10 text-sm sm:text-base font-bold text-primary">
                       {t.name
                         .split(" ")
                         .map((n) => n[0])
@@ -87,11 +106,11 @@ export function Testimonials() {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-foreground">
+                      <p className="text-sm sm:text-base font-semibold text-foreground">
                         {t.name}
                       </p>
                       {t.location && (
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           {t.location}
                         </p>
                       )}
@@ -102,12 +121,12 @@ export function Testimonials() {
             ))}
           </CarouselContent>
 
-          {/* Navigation buttons with gap */}
-          <div className="absolute inset-y-0 left-0 flex items-center -translate-x-16">
-            <CarouselPrevious className="relative left-4" />
+          {/* Navigation Arrows (hidden on phone) */}
+          <div className="absolute inset-y-0 left-0 hidden sm:flex items-center -translate-x-10 sm:-translate-x-14">
+            <CarouselPrevious className="relative left-2 sm:left-4" />
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center translate-x-16">
-            <CarouselNext className="relative right-4" />
+          <div className="absolute inset-y-0 right-0 hidden sm:flex items-center translate-x-10 sm:translate-x-14">
+            <CarouselNext className="relative right-2 sm:right-4" />
           </div>
         </Carousel>
       </div>

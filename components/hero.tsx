@@ -84,11 +84,11 @@ import {
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-6xl px-4 py-10 md:py-16">
+      <div className="mx-auto max-w-6xl px-4 py-6 md:py-16">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           {/* Left content */}
-          <div className="space-y-6">
-            <h1 className="text-pretty text-4xl font-bold tracking-tight md:text-2xl">
+          <div className="space-y-2">
+            <h1 className="text-pretty text-2xl sm:text-4xl text-amber-600 font-bold tracking-tight md:text-2xl">
               <Trans>Pandit Ramnaryan Mishra</Trans>
             </h1>
             <p className="text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
